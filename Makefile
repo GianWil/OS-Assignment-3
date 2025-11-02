@@ -1,19 +1,12 @@
 CC = gcc
-CFLAGS = -Wall -pthread -O2
+CFLAGS = -Wall -Wpointer-arith -Wstrict-prototypes -std=gnu89 -fPIC -MMD -MP -lpthread
 
-TARGET = test-mergesort
-OBJS = test-mergesort.o mergesort.o
+all: test-mergesort
 
-all: $(TARGET)
+#This builds an executable 
+test-mergesort: test-mergesort.o mergesort.o
+	$(CC) $(CFLAGS) -o $@ $?
 
-$(TARGET): $(OBJS)
-<TAB>$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
-
-mergesort.o: mergesort.c mergesort.h
-<TAB>$(CC) $(CFLAGS) -c mergesort.c
-
-test-mergesort.o: test-mergesort.c mergesort.h
-<TAB>$(CC) $(CFLAGS) -c test-mergesort.c
-
+.PHONY: clean
 clean:
-<TAB>rm -f *.o $(TARGET)
+	/bin/rm -f *.o *.d test-mergesort
